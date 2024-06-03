@@ -1,0 +1,251 @@
+[
+    {
+        "label": "get_random_bytes",
+        "importPath": "Crypto.Random",
+        "description": "Crypto.Random",
+        "isExtraImport": true,
+        "detail": "Crypto.Random",
+        "documentation": {}
+    },
+    {
+        "label": "AES",
+        "importPath": "Crypto.Cipher",
+        "description": "Crypto.Cipher",
+        "isExtraImport": true,
+        "detail": "Crypto.Cipher",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "random",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "random",
+        "description": "random",
+        "detail": "random",
+        "documentation": {}
+    },
+    {
+        "label": "string",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "string",
+        "description": "string",
+        "detail": "string",
+        "documentation": {}
+    },
+    {
+        "label": "SHA256",
+        "importPath": "Crypto.Hash",
+        "description": "Crypto.Hash",
+        "isExtraImport": true,
+        "detail": "Crypto.Hash",
+        "documentation": {}
+    },
+    {
+        "label": "hash_value",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def hash_value(data):\n    h = SHA256.new()\n    h.update(data)\n    return h.hexdigest()\ndef xor_bytes(bytes1, bytes2):\n    return bytes([b1 ^ b2 for b1, b2 in zip(bytes1, bytes2)])\ndef get_timestamp():\n    return int(time.time())\ndef send_message(message):\n    json_message = json.dumps(message)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "xor_bytes",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def xor_bytes(bytes1, bytes2):\n    return bytes([b1 ^ b2 for b1, b2 in zip(bytes1, bytes2)])\ndef get_timestamp():\n    return int(time.time())\ndef send_message(message):\n    json_message = json.dumps(message)\n    print(\"Sending message:\", json_message)\n    sent_messages.append(message)\n# In[13]:\nserial_numbers = []",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "get_timestamp",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def get_timestamp():\n    return int(time.time())\ndef send_message(message):\n    json_message = json.dumps(message)\n    print(\"Sending message:\", json_message)\n    sent_messages.append(message)\n# In[13]:\nserial_numbers = []\nsession_keys = {}\nmulticast_groups = {}",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "send_message",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def send_message(message):\n    json_message = json.dumps(message)\n    print(\"Sending message:\", json_message)\n    sent_messages.append(message)\n# In[13]:\nserial_numbers = []\nsession_keys = {}\nmulticast_groups = {}\nnum_smart_meters = 3\ngateway_key = \"\".join(",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "generate_serial_number",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def generate_serial_number(length=10):\n    characters = string.digits\n    serial_number = \"\".join(random.choice(characters) for _ in range(length))\n    return serial_number\ndef generate_smart_meter(smart_meter_id, gateway_key, serial_number):\n    h_sn = hash_value(serial_number.encode())\n    x_i = get_random_bytes(16)\n    n_i = xor_bytes(\n        bytes.fromhex(hash_value((smart_meter_id + h_sn).encode())),\n        bytes.fromhex(hash_value(gateway_key + x_i)),",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "generate_smart_meter",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def generate_smart_meter(smart_meter_id, gateway_key, serial_number):\n    h_sn = hash_value(serial_number.encode())\n    x_i = get_random_bytes(16)\n    n_i = xor_bytes(\n        bytes.fromhex(hash_value((smart_meter_id + h_sn).encode())),\n        bytes.fromhex(hash_value(gateway_key + x_i)),\n    )\n    return {\n        \"h_sn\": h_sn,\n        \"n_i\": n_i.hex(),",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "generate_smart_meters",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def generate_smart_meters(num_smart_meters, gateway_key):\n    smart_meter_ids = []\n    serial_numbers =[]\n    registration_info = {}\n    for i in range(num_smart_meters):\n        smart_meter_id = f\"SM{i+1}\"\n        serial_number = generate_serial_number()\n        serial_numbers.append(serial_number)\n        smart_meter_ids.append(smart_meter_id)\n        registration_info[smart_meter_id] = generate_smart_meter(",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "smart_meter_registration",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def smart_meter_registration(smart_meter_id, serial_number):\n    h_sn = hash_value(serial_number.encode())\n    message = {\"smart_meter_id\": smart_meter_id, \"h_sn\": h_sn}\n    send_message(message)\n# In[15]:\ndef gateway_registration_processing(message, gateway_key):\n    smart_meter_id = message[\"smart_meter_id\"]\n    h_sn = message[\"h_sn\"]\n    x_i = get_random_bytes(16)\n    n_i = xor_bytes(",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "gateway_registration_processing",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def gateway_registration_processing(message, gateway_key):\n    smart_meter_id = message[\"smart_meter_id\"]\n    h_sn = message[\"h_sn\"]\n    x_i = get_random_bytes(16)\n    n_i = xor_bytes(\n        bytes.fromhex(hash_value((smart_meter_id + h_sn).encode())),\n        bytes.fromhex(hash_value(gateway_key + x_i)),\n    )\n    registration_info = {\n        \"smart_meter_id\": smart_meter_id,",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "smart_meter_authentication",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def smart_meter_authentication(smart_meter_id, h_sn, n_i, x_i, gateway_key):\n    timestamp = get_timestamp()\n    did_i = xor_bytes(\n        bytes.fromhex(hash_value((smart_meter_id + h_sn).encode())),\n        bytes.fromhex(hash_value((x_i.hex() + str(timestamp)).encode())),\n    )\n    k_i = get_random_bytes(16)\n    pk_i = hash_value(\n        xor_bytes(\n            bytes.fromhex(",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "gateway_authentication",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def gateway_authentication(message, gateway_key, registration_info):\n    smart_meter_id = message[\"smart_meter_id\"]\n    did_i = message[\"did_i\"]\n    b_i = message[\"b_i\"]\n    timestamp = message[\"timestamp\"]\n    pk_i = message[\"pk_i\"]\n    h_sn = registration_info[smart_meter_id][\"h_sn\"]\n    x_i = bytes.fromhex(registration_info[smart_meter_id][\"x_i\"])\n    current_timestamp = get_timestamp()\n    if abs(current_timestamp - timestamp) > 300:",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "key_refreshment",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def key_refreshment(smart_meter_id, session_key, gateway_key, x_i):\n    new_session_key = hash_value(\n        xor_bytes(\n            bytes.fromhex(session_key), bytes.fromhex(hash_value((gateway_key + x_i)))\n        )\n    )\n    print(\"New session key for\", smart_meter_id + \":\", new_session_key)\n    session_keys[smart_meter_id] = new_session_key\n    smart_meter_authentication(\n        smart_meter_id,",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "establish_multicast_group",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def establish_multicast_group(group_id, smart_meter_ids, gateway_key):\n    group_key = get_random_bytes(16)\n    for smart_meter_id in smart_meter_ids:\n        x_a = get_random_bytes(16)\n        session_key = bytes.fromhex(session_keys[smart_meter_id])\n        cipher = AES.new(session_key, AES.MODE_EAX)\n        nonce = cipher.nonce\n        ciphertext, tag = cipher.encrypt_and_digest(\n            json.dumps(\n                {",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "join_multicast_group",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def join_multicast_group(message, gateway_key):\n    smart_meter_id = message[\"smart_meter_id\"]\n    timestamp = message[\"timestamp\"]\n    encrypted_data = bytes.fromhex(message[\"encrypted_data\"])\n    nonce = encrypted_data[:16]\n    tag = encrypted_data[16:32]\n    ciphertext = encrypted_data[32:]\n    session_key = bytes.fromhex(session_keys[smart_meter_id])\n    cipher = AES.new(session_key, AES.MODE_EAX, nonce=nonce)\n    try:",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "sent_messages",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "sent_messages = []\ndef hash_value(data):\n    h = SHA256.new()\n    h.update(data)\n    return h.hexdigest()\ndef xor_bytes(bytes1, bytes2):\n    return bytes([b1 ^ b2 for b1, b2 in zip(bytes1, bytes2)])\ndef get_timestamp():\n    return int(time.time())\ndef send_message(message):",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "serial_numbers",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "serial_numbers = []\nsession_keys = {}\nmulticast_groups = {}\nnum_smart_meters = 3\ngateway_key = \"\".join(\n    random.choice(string.ascii_letters + string.digits) for _ in range(16)\n).encode()\ndef generate_serial_number(length=10):\n    characters = string.digits\n    serial_number = \"\".join(random.choice(characters) for _ in range(length))",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "session_keys",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "session_keys = {}\nmulticast_groups = {}\nnum_smart_meters = 3\ngateway_key = \"\".join(\n    random.choice(string.ascii_letters + string.digits) for _ in range(16)\n).encode()\ndef generate_serial_number(length=10):\n    characters = string.digits\n    serial_number = \"\".join(random.choice(characters) for _ in range(length))\n    return serial_number",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "multicast_groups",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "multicast_groups = {}\nnum_smart_meters = 3\ngateway_key = \"\".join(\n    random.choice(string.ascii_letters + string.digits) for _ in range(16)\n).encode()\ndef generate_serial_number(length=10):\n    characters = string.digits\n    serial_number = \"\".join(random.choice(characters) for _ in range(length))\n    return serial_number\ndef generate_smart_meter(smart_meter_id, gateway_key, serial_number):",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "num_smart_meters",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "num_smart_meters = 3\ngateway_key = \"\".join(\n    random.choice(string.ascii_letters + string.digits) for _ in range(16)\n).encode()\ndef generate_serial_number(length=10):\n    characters = string.digits\n    serial_number = \"\".join(random.choice(characters) for _ in range(length))\n    return serial_number\ndef generate_smart_meter(smart_meter_id, gateway_key, serial_number):\n    h_sn = hash_value(serial_number.encode())",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "gateway_key",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "gateway_key = \"\".join(\n    random.choice(string.ascii_letters + string.digits) for _ in range(16)\n).encode()\ndef generate_serial_number(length=10):\n    characters = string.digits\n    serial_number = \"\".join(random.choice(characters) for _ in range(length))\n    return serial_number\ndef generate_smart_meter(smart_meter_id, gateway_key, serial_number):\n    h_sn = hash_value(serial_number.encode())\n    x_i = get_random_bytes(16)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "group_id",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "group_id = \"GROUP1\"\nestablish_multicast_group(group_id, [\"SM1\", \"SM2\"], gateway_key)\nfor smart_meter_id in [\"SM1\", \"SM2\"]:\n    encrypted_data = None\n    for message in sent_messages:\n        if message[\"smart_meter_id\"] == smart_meter_id:\n            if \"encrypted_data\" in message:\n                encrypted_data = message[\"encrypted_data\"]\n                break\n    if encrypted_data:",
+        "detail": "main",
+        "documentation": {}
+    }
+]
